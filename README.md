@@ -37,3 +37,6 @@
 15. access kafka spark-master ui to check if spark-worker nodes are being utilized.
 16. wait for data scraping and processing to finish.
 17. access metabase ui to check data and perform visualizations.
+
+## Work-in-progress
+1. migration into aws cloud.
