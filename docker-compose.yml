@@ -6,7 +6,7 @@ services:
     environment:
       - ALLOW_ANONYMOUS_LOGIN=yes
     ports:
-      - "2181:2181"
+      - "22181:2181"
 
   kafka1:
     image: bitnami/kafka:latest
