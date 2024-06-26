@@ -1,0 +1,114 @@
+version: '3.8'
+
+services:
+  zookeeper:
+    image: bitnami/zookeeper:latest
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+    ports:
+      - "2181:2181"
+
+  kafka1:
+    image: bitnami/kafka:latest
+    environment:
+      - KAFKA_BROKER_ID=1
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,PLAINTEXT_HOST://:29092
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka1:9092,PLAINTEXT_HOST://localhost:29092
+      - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=true
+    ports:
+      - "29092:29092"
+    depends_on:
+      - zookeeper
+  
+  kafka2:
+    image: bitnami/kafka:latest
+    environment:
+      - KAFKA_BROKER_ID=2
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,PLAINTEXT_HOST://:29092
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka2:9092,PLAINTEXT_HOST://localhost:29092
+      - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=true
+    ports:
+      - "29093:29092"
+    depends_on:
+      - zookeeper
+  
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    ports:
+      - "8085:8080"
+    environment:
+      DYNAMIC_CONFIG_ENABLED: 'true'
+
+  spark-master:
+    image: bitnami/spark:latest
+    environment:
+      - SPARK_MODE=master
+      - SPARK_RPC_AUTHENTICATION_ENABLED=no
+      - SPARK_RPC_ENCRYPTION_ENABLED=no
+      - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
+      - SPARK_SSL_ENABLED=no
+    ports:
+      - "8080:8080"
+  
+  spark-worker1:
+    image: bitnami/spark:latest
+    environment:
+      - SPARK_MODE=worker
+      - SPARK_MASTER_URL=spark://spark-master:7077
+      - SPARK_WORKER_MEMORY=1G
+      - SPARK_WORKER_CORES=2
+      - SPARK_RPC_AUTHENTICATION_ENABLED=no
+      - SPARK_RPC_ENCRYPTION_ENABLED=no
+      - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
+      - SPARK_SSL_ENABLED=no
+    depends_on:
+      - spark-master
+  
+  spark-worker2:
+    image: bitnami/spark:latest
+    environment:
+      - SPARK_MODE=worker
+      - SPARK_MASTER_URL=spark://spark-master:7077
+      - SPARK_WORKER_MEMORY=1G
+      - SPARK_WORKER_CORES=2
+      - SPARK_RPC_AUTHENTICATION_ENABLED=no
+      - SPARK_RPC_ENCRYPTION_ENABLED=no
+      - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
+      - SPARK_SSL_ENABLED=no
+    depends_on:
+      - spark-master
+
+  mongo:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  metabase:
+    image: metabase/metabase:latest
+    ports:
+      - "3000:3000"
+    environment:
+      MB_DB_TYPE: postgres
+      MB_DB_DBNAME: metabaseappdb
+      MB_DB_PORT: 5432
+      MB_DB_USER: metabase
+      MB_DB_PASS: metabase
+      MB_DB_HOST: postgres
+  
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: metabase
+      POSTGRES_DB: metabaseappdb
+      POSTGRES_PASSWORD: metabase
+
+volumes:
+  mongo_data:
