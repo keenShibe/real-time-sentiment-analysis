@@ -40,3 +40,5 @@
 
 ## Work-in-progress
 1. migration into aws cloud.
+2. replace docker-compose with kubernetes to simulate large scale projects.
+3. use github actions for CI/CD
