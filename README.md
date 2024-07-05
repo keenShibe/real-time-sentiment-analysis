@@ -30,11 +30,11 @@
     * access `<instance ip/localhost>:3000` to access metabase admin ui and connect to mongodb.
     * access `<instance ip/localhost>:8080` to access kafka spark-master ui to ensure spark-workers are linked to spark-master.
     * access `<instance ip/localhost>:8085` to access kafka cluster ui to ensure brokers are linked to cluster.
-11. run the producer script with `python selenium_producer.py`
-12. access kafka cluster ui to check if the data is going into kafka topics.
-13. login to spark-master with `docker exec -it <container_name/container-id> bash` and install textblob with `pip install textblob`
-14. run `spark-submit --master spark://spark-master:7077 --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.1,org.mongodb.spark:mongo-spark-connector_2.12:3.0.1 /opt/bitnami/spark/consumer.py` to run consumer script with dependencies.
-15. access kafka spark-master ui to check if spark-worker nodes are being utilized.
+11. login to spark-master with `docker exec -it <container_name/container-id> bash` and install textblob with `pip install textblob`
+12. run `spark-submit --master spark://spark-master:7077 --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.1,org.mongodb.spark:mongo-spark-connector_2.12:3.0.1 /opt/bitnami/spark/consumer.py` to run consumer script with dependencies.
+13. access kafka spark-master ui to check if spark-worker nodes are being utilized.
+14. run the producer script with `python selenium_producer.py`
+15. 11. access kafka cluster ui to check if the data is going into kafka topics. 
 16. wait for data scraping and processing to finish.
 17. access metabase ui to check data and perform visualizations.
 
