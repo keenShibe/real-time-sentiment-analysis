@@ -34,7 +34,7 @@
 12. run `spark-submit --master spark://spark-master:7077 --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.1,org.mongodb.spark:mongo-spark-connector_2.12:3.0.1 /opt/bitnami/spark/consumer.py` to run consumer script with dependencies.
 13. access kafka spark-master ui to check if spark-worker nodes are being utilized.
 14. run the producer script with `python selenium_producer.py`
-15. 11. access kafka cluster ui to check if the data is going into kafka topics. 
+15. access kafka cluster ui to check if the data is going into kafka topics. 
 16. wait for data scraping and processing to finish.
 17. access metabase ui to check data and perform visualizations.
 
