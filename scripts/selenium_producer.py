@@ -7,6 +7,12 @@ from confluent_kafka import Producer
 import time
 import socket
 import json
+import argparse
+
+# Set up command-line argument parsing
+parser = argparse.ArgumentParser(description="Google Play Review Scraper")
+parser.add_argument("url", help="Google Play app URL to scrape reviews from")
+args = parser.parse_args()
 
 options = webdriver.ChromeOptions()
 options.add_argument('--no-sandbox')
@@ -33,8 +39,8 @@ conf = {'bootstrap.servers': 'localhost:29092,localhost:29093',
 producer = Producer(conf)
 topic_name = 'reviewTopic'
 
-# Set the URL Target
-url = "https://play.google.com/store/apps/details?id=com.whatsapp"
+# Use the URL passed as an argument
+url = args.url
 
 # Call the URL and let the browser open the web page
 driver.get(url)
