@@ -28,7 +28,7 @@ services:
       - zookeeper
     networks:
       - kafka-network
-  
+
   kafka2:
     container_name: kafka2
     image: bitnami/kafka:latest
@@ -46,7 +46,7 @@ services:
       - zookeeper
     networks:
       - kafka-network
-  
+
   kafka-ui:
     container_name: kafka-ui
     image: provectuslabs/kafka-ui:latest
@@ -54,14 +54,16 @@ services:
       - "8085:8080"
     environment:
       - KAFKA_CLUSTERS_0_NAME=kafka-cluster
-      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka1:9092,kafka2:9093
+      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka1:9092,kafka2:29093
       - KAFKA_CLUSTERS_0_ZOOKEEPER=zookeeper:2181
     networks:
       - kafka-network
 
   spark-master:
     container_name: spark-master
-    image: bitnami/spark:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.spark-master
     environment:
       - SPARK_MODE=master
       - SPARK_RPC_AUTHENTICATION_ENABLED=no
@@ -72,10 +74,12 @@ services:
       - "8080:8080"
     networks:
       - kafka-network
-  
+
   spark-worker1:
     container_name: spark-worker1
-    image: bitnami/spark:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.spark-worker
     environment:
       - SPARK_MODE=worker
       - SPARK_MASTER_URL=spark://spark-master:7077
@@ -89,10 +93,12 @@ services:
       - spark-master
     networks:
       - kafka-network
-  
+
   spark-worker2:
     container_name: spark-worker2
-    image: bitnami/spark:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.spark-worker
     environment:
       - SPARK_MODE=worker
       - SPARK_MASTER_URL=spark://spark-master:7077
@@ -131,7 +137,7 @@ services:
       MB_DB_HOST: postgres
     networks:
       - kafka-network
-  
+
   postgres:
     container_name: postgres
     image: postgres:latest
