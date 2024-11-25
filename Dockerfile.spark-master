@@ -1,8 +1,0 @@
-# Dockerfile.spark-master
-FROM bitnami/spark:latest
-
-# Copy consumer.py into /opt/bitnami/spark
-COPY scripts/consumer.py /opt/bitnami/spark/consumer.py
-
-# Install textblob and download necessary NLTK data
-RUN pip install textblob
