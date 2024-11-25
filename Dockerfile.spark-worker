@@ -1,0 +1,5 @@
+# Dockerfile.spark-worker
+FROM bitnami/spark:latest
+
+# Install textblob and download necessary NLTK data
+RUN pip install textblob
