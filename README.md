@@ -1,3 +1,4 @@
+![Sentify](https://github.com/user-attachments/assets/57740589-e684-437f-b3d6-c28f0276f150)
 # Sentify - A real-time sentiment analysis pipeline for android app developers
 
 ## Dependencies
